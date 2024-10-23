@@ -656,5 +656,25 @@ const products = [
       "apparel",
       "mens"
     ]
+  },
+  {
+    id :"f2c47db9-8ab0-4f79-a68c-3d2e7eab47f5",
+    image :"images/products/image-blue-school-bag-white-background_125540-3456.avif",
+    name: "BackBack for School Students",
+    rating : {
+      stars: 4,
+      count : 4010
+    },
+    priceCents : 3000
+  }
+  ,{
+    id :"d3f1a2b4-7ed3-442b-918b-9a82c9e2c1d1",
+    image :"images/products/loafers.png",
+    name: "Black Loafers",
+    rating : {
+      stars: 3.5,
+      count : 40
+    },
+    priceCents : 3500
   }
 ];
