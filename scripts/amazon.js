@@ -40,7 +40,7 @@ products.forEach ( (products) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-cart-${products.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -52,10 +52,12 @@ products.forEach ( (products) => {
 })
 
 document.querySelector('.products-grid').innerHTML = productHTML;
+//clearing Timeout
+const addedCartTimeOut ={};
 
 document.querySelectorAll('.js-add-to-cart').forEach((value) => {
   value.addEventListener('click',() => {
-    const productId = value.dataset.productId;
+    const {productId} = value.dataset;
     let matching;
     cart.forEach((item) => {
       if(item.productId === productId) {
@@ -66,21 +68,42 @@ document.querySelectorAll('.js-add-to-cart').forEach((value) => {
 
     
     const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`)
-    const quantityValue = Number(quantitySelector.value);
+    const quantity = Number(quantitySelector.value);
     if(matching) {
-      matching.quantity += quantityValue;
+      matching.quantity += quantity;
     }
     else {
       cart.push(
         {productId : productId,
-        quantity : quantityValue,}
+        quantity : quantity,}
       )
     }
+
+    console.log(cart)
     let cartQuantity = 0;
     cart.forEach((item) => {
       cartQuantity += item.quantity;
     })
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+
+    
+    //inside this object we use f2c47db9-8ab0-4f79-a68c-3d2e7eab47f5 : timeOut Id
+    const previousTimeOutId = addedCartTimeOut[productId];
+    const addedCart = document.querySelector(`.js-added-cart-${productId}`);
+    addedCart.classList.add('added-to-cart-clicked');
+    if(previousTimeOutId) {
+      clearTimeout(previousTimeOutId);
+    }
+    
+      const timeOut = setTimeout(() => {
+        addedCart.classList.remove('added-to-cart-clicked');
+  
+      },2000);
+      
+      addedCartTimeOut[productId] = timeOut;
+    
+    
+    
   })
 })
 
