@@ -1,3 +1,6 @@
+import { cart } from "../data/cart.js";
+import { products } from "../data/products.js";
+
 let productHTML = ''
 products.forEach ( (products) => {
     productHTML += `
@@ -53,12 +56,10 @@ products.forEach ( (products) => {
 
 document.querySelector('.products-grid').innerHTML = productHTML;
 //clearing Timeout
-const addedCartTimeOut ={};
+const addedCartTimeout ={};
 
-document.querySelectorAll('.js-add-to-cart').forEach((value) => {
-  value.addEventListener('click',() => {
-    const {productId} = value.dataset;
-    let matching;
+function addToCart(productId) {
+  let matching;
     cart.forEach((item) => {
       if(item.productId === productId) {
         matching = item;
@@ -79,31 +80,40 @@ document.querySelectorAll('.js-add-to-cart').forEach((value) => {
       )
     }
 
-    console.log(cart)
-    let cartQuantity = 0;
+    console.log(cart);
+}
+
+function updateCartQuantity() {
+  let cartQuantity = 0;
     cart.forEach((item) => {
       cartQuantity += item.quantity;
     })
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
 
-    
-    //inside this object we use f2c47db9-8ab0-4f79-a68c-3d2e7eab47f5 : timeOut Id
-    const previousTimeOutId = addedCartTimeOut[productId];
-    const addedCart = document.querySelector(`.js-added-cart-${productId}`);
-    addedCart.classList.add('added-to-cart-clicked');
-    if(previousTimeOutId) {
-      clearTimeout(previousTimeOutId);
-    }
-    
-      const timeOut = setTimeout(() => {
-        addedCart.classList.remove('added-to-cart-clicked');
-  
-      },2000);
-      
-      addedCartTimeOut[productId] = timeOut;
-    
-    
-    
+}
+function timeoutForAddedCart(productId) {
+   //inside this object we use f2c47db9-8ab0-4f79-a68c-3d2e7eab47f5 : timeOut Id
+   const previousTimeoutId = addedCartTimeout[productId];
+   const addedCart = document.querySelector(`.js-added-cart-${productId}`);
+   addedCart.classList.add('added-to-cart-clicked');
+   if(previousTimeoutId) {
+     clearTimeout(previousTimeoutId);
+   }
+   
+     const timeout = setTimeout(() => {
+       addedCart.classList.remove('added-to-cart-clicked');
+ 
+     },2000);
+     
+     addedCartTimeout[productId] = timeout;
+   
+}
+document.querySelectorAll('.js-add-to-cart').forEach((value) => {
+  value.addEventListener('click',() => {
+    const {productId} = value.dataset;
+    addToCart(productId);
+    updateCartQuantity();
+    timeoutForAddedCart(productId);
   })
 })
 
