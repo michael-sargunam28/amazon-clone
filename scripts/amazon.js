@@ -1,8 +1,11 @@
-import { cart } from "../data/cart.js";
+import { addToCart,updateCartQuantity,timeoutForAddedCart,loadCartFromStorage } from "../data/cart.js";
 import { products } from "../data/products.js";
+import { formattedCurrency } from "./utils/money.js";
 
+loadCartFromStorage();
 let productHTML = ''
 products.forEach ( (products) => {
+  updateCartQuantity();
     productHTML += `
      <div class="product-container">
           <div class="product-image-container">
@@ -23,7 +26,7 @@ products.forEach ( (products) => {
           </div>
 
           <div class="product-price">
-            $${(products.priceCents /100).toFixed(2)}
+            $${formattedCurrency(products)}
           </div>
 
           <div class="product-quantity-container">
@@ -55,59 +58,10 @@ products.forEach ( (products) => {
 })
 
 document.querySelector('.products-grid').innerHTML = productHTML;
-//clearing Timeout
-const addedCartTimeout ={};
 
-function addToCart(productId) {
-  let matching;
-    cart.forEach((item) => {
-      if(item.productId === productId) {
-        matching = item;
-      }
-      
-    });
 
-    
-    const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`)
-    const quantity = Number(quantitySelector.value);
-    if(matching) {
-      matching.quantity += quantity;
-    }
-    else {
-      cart.push(
-        {productId : productId,
-        quantity : quantity,}
-      )
-    }
 
-    console.log(cart);
-}
 
-function updateCartQuantity() {
-  let cartQuantity = 0;
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
-    })
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-
-}
-function timeoutForAddedCart(productId) {
-   //inside this object we use f2c47db9-8ab0-4f79-a68c-3d2e7eab47f5 : timeOut Id
-   const previousTimeoutId = addedCartTimeout[productId];
-   const addedCart = document.querySelector(`.js-added-cart-${productId}`);
-   addedCart.classList.add('added-to-cart-clicked');
-   if(previousTimeoutId) {
-     clearTimeout(previousTimeoutId);
-   }
-   
-     const timeout = setTimeout(() => {
-       addedCart.classList.remove('added-to-cart-clicked');
- 
-     },2000);
-     
-     addedCartTimeout[productId] = timeout;
-   
-}
 document.querySelectorAll('.js-add-to-cart').forEach((value) => {
   value.addEventListener('click',() => {
     const {productId} = value.dataset;
