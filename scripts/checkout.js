@@ -1,11 +1,7 @@
-import { cart } from "../data/cart.js";
+import { cart ,deleteCart} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formattedCurrency } from "./utils/money.js";
 
-// Load cart from localStorage when the page loads
-import { loadCartFromStorage } from "../data/cart.js";
-
-loadCartFromStorage();
 
 let cartBox = "";
 
@@ -22,7 +18,7 @@ cart.forEach((cartItem) => {
   }
 
   cartBox += `
-   <div class="cart-item-container">
+   <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -45,7 +41,7 @@ cart.forEach((cartItem) => {
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary">
+                  <span class="delete-quantity-link  link-primary" data-product-id = ${matchingProduct.id}>
                     Delete
                   </span>
                 </div>
@@ -97,4 +93,17 @@ cart.forEach((cartItem) => {
               </div>
             </div>
           </div>`;})
-document.querySelector('.js-order-summary').innerHTML = cartBox; 
+          const orderSummary = document.querySelector('.js-order-summary');
+          if (orderSummary) {
+            orderSummary.innerHTML = cartBox;
+          } else {
+            console.error("Element '.js-order-summary' not found in the DOM.");
+          }
+           
+
+document.querySelectorAll('.delete-quantity-link').forEach((link) =>{
+  link.addEventListener('click',() => {
+    const {productId} = link.dataset;
+    deleteCart(productId);
+  })
+})

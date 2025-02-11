@@ -1,4 +1,4 @@
-export const cart = [];
+export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 //clearing Timeout
 const addedCartTimeout = {};
@@ -24,9 +24,9 @@ export function addToCart(productId) {
   }
 
   // Store cart in local storage
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem('cart', JSON.stringify(cart));
 
-  console.log(cart);
+  
 }
 
 export function updateCartQuantity() {
@@ -34,7 +34,9 @@ export function updateCartQuantity() {
   cart.forEach((item) => {
     cartQuantity += item.quantity;
   });
+  
   document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+  
 }
 
 export function timeoutForAddedCart(productId) {
@@ -52,10 +54,21 @@ export function timeoutForAddedCart(productId) {
   addedCartTimeout[productId] = timeout;
 }
 
-// Load cart from localStorage on page load
-export function loadCartFromStorage() {
-  const storedCart = localStorage.getItem("cart");
-  if (storedCart) {
-    cart.push(...JSON.parse(storedCart));
-  }
+
+export function deleteCart(productId) {
+  let newCart = [];
+    cart.forEach((products) => {
+      if (products.productId !== productId) {
+        newCart.push(products);
+      }
+
+    });
+    cart = newCart;
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    document.querySelector(`.js-cart-item-container-${productId}`).remove();
+    document.addEventListener("DOMContentLoaded",() =>{
+      updateCartQuantity();});
+    
+
 }

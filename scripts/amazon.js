@@ -1,8 +1,9 @@
-import { addToCart,updateCartQuantity,timeoutForAddedCart,loadCartFromStorage } from "../data/cart.js";
+import { addToCart,updateCartQuantity,timeoutForAddedCart,cart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formattedCurrency } from "./utils/money.js";
 
-loadCartFromStorage();
+localStorage.setItem('cart', JSON.stringify(cart));
+
 let productHTML = ''
 products.forEach ( (products) => {
   updateCartQuantity();
