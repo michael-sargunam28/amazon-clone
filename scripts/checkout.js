@@ -1,6 +1,10 @@
 import { cart ,deleteCart} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formattedCurrency } from "./utils/money.js";
+import dayJs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
+import { deliveryOptions } from "../data/deliveryoptions.js";
+
+
 
 
 let cartBox = "";
@@ -16,11 +20,22 @@ cart.forEach((cartItem) => {
     console.log(`No matching product found for productId: ${productId}`);
     return;  // Skip this cart item if no product is found
   }
+  let  deliveryOptionDate ;
+  deliveryOptions.forEach ((Options) => {
+    if (Options.id === cartItem.deliveryOptionsId) {
+      deliveryOptionDate = Options.days;
+    }
+  })
+
+  const today = dayJs();
+  const deliveryDate = today.add(deliveryOptionDate,'days');
+  const formatedDate = deliveryDate.format("dddd , MMMM D");
+
 
   cartBox += `
    <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
-              Delivery date: Tuesday, June 21
+              Delivery date: ${formatedDate}
             </div>
 
             <div class="cart-item-details-grid">
@@ -51,55 +66,48 @@ cart.forEach((cartItem) => {
                 <div class="delivery-options-title">
                   Choose a delivery option:
                 </div>
-                <div class="delivery-option">
-                  <input type="radio" checked
-                    class="delivery-option-input"
-                    name="delivery-option-${productId}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Tuesday, June 21
-                    </div>
-                    <div class="delivery-option-price">
-                      FREE Shipping
-                    </div>
-                  </div>
-                </div>
-                <div class="delivery-option">
-                  <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${productId}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Wednesday, June 15
-                    </div>
-                    <div class="delivery-option-price">
-                      $4.99 - Shipping
-                    </div>
-                  </div>
-                </div>
-                <div class="delivery-option">
-                  <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${productId}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Monday, June 13
-                    </div>
-                    <div class="delivery-option-price">
-                      $9.99 - Shipping
-                    </div>
-                  </div>
-                </div>
+                
+                  ${deliveryOptionsHTML(productId,cartItem)}
+                
+                
+                
               </div>
             </div>
           </div>`;})
-          const orderSummary = document.querySelector('.js-order-summary');
-          if (orderSummary) {
-            orderSummary.innerHTML = cartBox;
-          } else {
-            console.error("Element '.js-order-summary' not found in the DOM.");
-          }
-           
+
+function deliveryOptionsHTML(productId,cartItem) {
+  let deliveryHTML = '';
+  
+  deliveryOptions.forEach ((deliveryOptions) => {
+    const today = dayJs();
+    const ischecked = deliveryOptions.id === cartItem.deliveryOptionsId;
+    const deliveryDate = today.add(deliveryOptions.days,'days');
+    const formatedDate = deliveryDate.format("dddd , MMMM D");
+    const price  = deliveryOptions.priceCents === 0 ? 'FREE-' : `${formattedCurrency(deliveryOptions)}-`;
+    deliveryHTML +=
+    `<div class="delivery-option">
+    <input type="radio" ${ischecked ? 'checked' : ''}
+    class="delivery-option-input"
+    name="delivery-option-${productId}">
+  <div>
+    <div class="delivery-option-date">
+     ${formatedDate}
+    </div>
+    <div class="delivery-option-price">
+      $${price} Shipping
+    </div>
+  </div>
+  </div>`
+  })
+  return deliveryHTML;
+}
+const orderSummary = document.querySelector('.js-order-summary');
+if (orderSummary) {
+  orderSummary.innerHTML = cartBox;
+} else {
+  console.error("Element '.js-order-summary' not found in the DOM.");
+}
+
 
 document.querySelectorAll('.delete-quantity-link').forEach((link) =>{
   link.addEventListener('click',() => {
