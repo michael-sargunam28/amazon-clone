@@ -73,3 +73,17 @@ export function deleteCart(productId) {
     
 
 }
+
+export function updateDeliveryOption(productId,deliveryOptionsId) {
+  let matching;
+  cart.forEach((item) => {
+    if (item.productId === productId) {
+      matching = item;
+    }
+  });
+
+  matching.deliveryOptionsId = deliveryOptionsId;
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+
+}

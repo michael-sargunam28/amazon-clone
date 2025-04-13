@@ -1,4 +1,4 @@
-import { cart ,deleteCart} from "../data/cart.js";
+import { cart ,deleteCart, updateDeliveryOption} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formattedCurrency } from "./utils/money.js";
 import dayJs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
@@ -85,7 +85,7 @@ function deliveryOptionsHTML(productId,cartItem) {
     const formatedDate = deliveryDate.format("dddd , MMMM D");
     const price  = deliveryOptions.priceCents === 0 ? 'FREE-' : `${formattedCurrency(deliveryOptions)}-`;
     deliveryHTML +=
-    `<div class="delivery-option">
+    `<div class="delivery-option js-delivery-option" data-product-id = ${productId} data-delivery-option-id = ${deliveryOptions.id} >
     <input type="radio" ${ischecked ? 'checked' : ''}
     class="delivery-option-input"
     name="delivery-option-${productId}">
@@ -115,3 +115,12 @@ document.querySelectorAll('.delete-quantity-link').forEach((link) =>{
     deleteCart(productId);
   })
 })
+
+document.querySelectorAll('.js-delivery-option').forEach((link) => {
+  link.addEventListener('click',() => {
+    const {productId , deliveryOptionId} = link.dataset;
+    console.log(productId,deliveryOptionId)
+    updateDeliveryOption(productId,deliveryOptionId);
+  })
+})
+
