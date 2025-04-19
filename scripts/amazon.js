@@ -27,7 +27,7 @@ products.forEach ( (products) => {
           </div>
 
           <div class="product-price">
-            $${formattedCurrency(products )}
+            $${formattedCurrency(products.priceCents )}
           </div>
 
           <div class="product-quantity-container">
