@@ -1,4 +1,9 @@
-export let cart = JSON.parse(localStorage.getItem('cart')) || [];
+export let cart;
+
+getFromStorage();
+ export function getFromStorage() {
+    cart = JSON.parse(localStorage.getItem('cart')) || [];
+}
 
 //clearing Timeout
 const addedCartTimeout = {};
@@ -12,7 +17,14 @@ export function addToCart(productId) {
   });
 
   const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
-  const quantity = Number(quantitySelector.value);
+let quantity = 1; // default
+
+if (quantitySelector && !isNaN(Number(quantitySelector.value)) && Number(quantitySelector.value) > 0) {
+  quantity = Number(quantitySelector.value);
+}
+
+
+  
 
   if (matching) {
     matching.quantity += quantity;
@@ -25,7 +37,11 @@ export function addToCart(productId) {
   }
 
   // Store cart in local storage
-  localStorage.setItem('cart', JSON.stringify(cart));
+  saveTOStorage();
+  function saveTOStorage() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+  
 
   
 }
