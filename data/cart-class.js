@@ -3,15 +3,15 @@
 class Cart{
     cartItems = undefined;
 
-    localStorageKey = undefined;
+    #localStorageKey = undefined;
     //clearing Timeout
     addedCartTimeout = {};
 
     constructor(key) {
         localStorage.clear();
-        this.localStorageKey = key;
+        this.#localStorageKey = key;
 
-        this.getFromStorage();
+        this.#getFromStorage();
     }
 
     timeoutForAddedCart(productId) {
@@ -29,8 +29,8 @@ class Cart{
         this.addedCartTimeout[productId] = timeout;
     };
 
-    getFromStorage() {
-    this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey)) || [];
+    #getFromStorage() {
+    this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey)) || [];
     };
     addToCart(productId) {
         let matching;
@@ -69,7 +69,7 @@ class Cart{
     };
 
     saveTOStorage() {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
     };
 
     updateDeliveryOption(productId,deliveryOptionsId) {
@@ -81,7 +81,7 @@ class Cart{
         });
 
         matching.deliveryOptionsId = deliveryOptionsId;
-        localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
     };
      quantity = 0;
     updateCartQuantity() {
@@ -103,7 +103,7 @@ class Cart{
 
             });
             this.cartItems = newCart;
-            localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+            localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
 
             document.querySelector(`.js-cart-item-container-${productId}`).remove();
             document.addEventListener("DOMContentLoaded",() =>{
