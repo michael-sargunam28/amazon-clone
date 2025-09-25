@@ -1,4 +1,4 @@
-import { cart ,deleteCart, updateDeliveryOption} from "../../data/cart.js";
+import { cart} from "../../data/cart-class.js";
 import { products } from "../../data/products.js";
 import { formattedCurrency } from "../utils/money.js";
 import dayJs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
@@ -12,7 +12,7 @@ export function orderSummaryfunction() {
 
     let cartBox = "";
 
-    cart.forEach((cartItem) => {
+    cart.cartItems.forEach((cartItem) => {
       const productId = cartItem.productId; // Correct the typo here
       console.log("Product ID:", productId);  // Debug log for productId
 
@@ -116,7 +116,7 @@ export function orderSummaryfunction() {
     document.querySelectorAll('.delete-quantity-link').forEach((link) =>{
       link.addEventListener('click',() => {
         const {productId} = link.dataset;
-        deleteCart(productId);
+        cart.deleteCart(productId);
         paymentSummaryfunction();
       })
     })
@@ -125,7 +125,7 @@ export function orderSummaryfunction() {
       link.addEventListener('click',() => {
         const {productId , deliveryOptionId} = link.dataset;
         console.log(productId,deliveryOptionId)
-        updateDeliveryOption(productId,deliveryOptionId);
+        cart.updateDeliveryOption(productId,deliveryOptionId);
         orderSummaryfunction();
         paymentSummaryfunction();
       })

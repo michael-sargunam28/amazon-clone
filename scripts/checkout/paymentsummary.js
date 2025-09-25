@@ -1,4 +1,4 @@
-import { cart } from "../../data/cart.js";
+import { cart } from "../../data/cart-class.js";
 import { products } from "../../data/products.js";
 import { deliveryOptions } from "../../data/deliveryoptions.js";
 import { formattedCurrency } from "../utils/money.js";
@@ -9,7 +9,7 @@ export function paymentSummaryfunction() {
    let taxPrice = 0;
    let beforeTaxPrice = 0;
    let totalPrice = 0;
-   cart.forEach((cartItem)=> {
+   cart.cartItems.forEach((cartItem)=> {
     const productId = cartItem.productId; // Correct the typo here
       console.log("Product ID:", productId);  // Debug log for productId
 

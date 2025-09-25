@@ -1,12 +1,10 @@
-import { addToCart,updateCartQuantity,timeoutForAddedCart,cart } from "../data/cart.js";
+import { cart } from "../data/cart-class.js";
 import { products } from "../data/products.js";
-import { formattedCurrency } from "./utils/money.js";
-
-localStorage.setItem('cart', JSON.stringify(cart));
+import { formattedCurrency } from "./utils/money.js"
 
 let productHTML = ''
 products.forEach ( (products) => {
-  updateCartQuantity();
+ cart.updateCartQuantity();
     productHTML += `
      <div class="product-container">
           <div class="product-image-container">
@@ -67,9 +65,9 @@ document.querySelector('.products-grid').innerHTML = productHTML;
 document.querySelectorAll('.js-add-to-cart').forEach((value) => {
   value.addEventListener('click',() => {
     const {productId} = value.dataset;
-    addToCart(productId);
-    updateCartQuantity();
-    timeoutForAddedCart(productId);
+    cart.addToCart(productId);
+    cart.updateCartQuantity();
+    cart.timeoutForAddedCart(productId);
   })
 })
 

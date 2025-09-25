@@ -1,14 +1,14 @@
 
 
 class Cart{
-    cartItems = undefined;
+    cartItems;
 
     #localStorageKey = undefined;
     //clearing Timeout
     addedCartTimeout = {};
 
     constructor(key) {
-        localStorage.clear();
+        
         this.#localStorageKey = key;
 
         this.#getFromStorage();
@@ -40,12 +40,12 @@ class Cart{
             }
         });
 
-        // const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
+        const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
         let quantity = 1; // default
 
-        // if (quantitySelector && !isNaN(Number(quantitySelector.value)) && Number(quantitySelector.value) > 0) {
-        // quantity = Number(quantitySelector.value);
-        // }
+        if (quantitySelector && !isNaN(Number(quantitySelector.value)) && Number(quantitySelector.value) > 0) {
+        quantity = Number(quantitySelector.value);
+        }
 
 
         
@@ -90,7 +90,7 @@ class Cart{
             cartQuantity += item.quantity;
         });
 
-        //document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+        document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
         this.quantity = cartQuantity;
 
     };
@@ -115,18 +115,18 @@ class Cart{
 }
 
 
-const  cart = new Cart('cart-class');
+export const  cart = new Cart('cart-class');
 const businessCart = new Cart('cart-business');
 
-businessCart.addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
-cart.addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
-cart.addToCart('15b6fc6f-327a-4ec4-896f-486349e85a3d');
+// businessCart.addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+// cart.addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+// cart.addToCart('15b6fc6f-327a-4ec4-896f-486349e85a3d');
 
 
-cart.updateCartQuantity();
-console.log(cart.quantity);
-cart.updateDeliveryOption('e43638ce-6aa0-4b85-b27f-e1d07eb678c6',3);
- console.log(cart,businessCart);
+// cart.updateCartQuantity();
+// console.log(cart.quantity);
+// cart.updateDeliveryOption('e43638ce-6aa0-4b85-b27f-e1d07eb678c6',3);
+//  console.log(cart,businessCart);
  
 
 
