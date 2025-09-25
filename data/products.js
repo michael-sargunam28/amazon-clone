@@ -1,5 +1,5 @@
 import { formattedCurrency } from "../scripts/utils/money.js";
-class Product {
+export class Product {
   id;
   image;
   name;
