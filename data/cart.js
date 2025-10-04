@@ -103,3 +103,14 @@ export function updateDeliveryOption(productId,deliveryOptionsId) {
 
 
 }
+export function loadCart(callBack){
+const cartReq = new XMLHttpRequest();
+cartReq.addEventListener('load',()=> {
+  
+  console.log(cartReq.response);
+  callBack();
+
+})
+cartReq.open('GET',"https://supersimplebackend.dev/cart");
+cartReq.send();}
+

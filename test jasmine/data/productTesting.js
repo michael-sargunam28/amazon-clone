@@ -1,9 +1,9 @@
-import { Product,loadProducts } from "../../data/products.js";
+import { Product,loadProductFetch } from "../../data/products.js";
 
 describe('test suite: Product',() =>{
 
   beforeAll((done)=>{
-    loadProducts(()=>{
+    loadProductFetch().then(()=>{
       done();
     })
   })
