@@ -1,8 +1,15 @@
 import { orderSummaryfunction } from "../../scripts/checkout/ordersummary.js";
 import { cart } from "../../data/cart-class.js";
+import { loadProducts } from "../../data/products.js";
 
 describe('test suite : orderSummary',() => {
     const pID = '83d4ca15-0f35-48f5-b7a3-1ea210004f2e';
+        beforeAll((done)=>{
+        loadProducts(()=>{
+        done();
+        })
+    })
+
     beforeEach(()=>{
         document.querySelector('.js-test-container').innerHTML =
         `<div class = "js-order-summary"></div>

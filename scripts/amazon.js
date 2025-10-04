@@ -1,7 +1,10 @@
 import { cart } from "../data/cart-class.js";
-import { products } from "../data/products.js";
+import { products ,loadProducts} from "../data/products.js";
 import { formattedCurrency } from "./utils/money.js"
 
+loadProducts(redenderProducts);
+
+function redenderProducts(){
 let productHTML = ''
 products.forEach ( (products) => {
  cart.updateCartQuantity();
@@ -70,5 +73,5 @@ document.querySelectorAll('.js-add-to-cart').forEach((value) => {
     cart.timeoutForAddedCart(productId);
   })
 })
-
+}
     

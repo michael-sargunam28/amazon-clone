@@ -1,6 +1,12 @@
-import { Product } from "../../data/products.js";
+import { Product,loadProducts } from "../../data/products.js";
 
 describe('test suite: Product',() =>{
+
+  beforeAll((done)=>{
+    loadProducts(()=>{
+      done();
+    })
+  })
 
      let product;
 
