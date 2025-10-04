@@ -1,5 +1,5 @@
 import { orderSummaryfunction } from "../../scripts/checkout/ordersummary.js";
-import { cart ,getFromStorage} from "../../data/cart.js";
+import { cart } from "../../data/cart-class.js";
 
 describe('test suite : orderSummary',() => {
     const pID = '83d4ca15-0f35-48f5-b7a3-1ea210004f2e';
@@ -9,16 +9,12 @@ describe('test suite : orderSummary',() => {
         <div class = "js-payment-summary"></div>
 
         `;
-        spyOn(localStorage,'setItem');
-        spyOn(localStorage,'getItem').and.callFake( ()=> {
-            return JSON.stringify([{
-                productId: pID,
+        cart.cartItems = [{
+            productId: pID,
                 quantity: 1,
                 deliveryOptionsId :'2'
-              }]
-            )
-        });
-        getFromStorage();
+        }]
+       
         orderSummaryfunction();
     })
     it('display the cart',() => {
